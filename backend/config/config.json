@@ -1,0 +1,9 @@
+{
+    "development": {
+    "host": "localhost",
+    "username": "root",
+    "password": "0ULb6vBqykon#yWO7qtPj85R780KyO",
+    "database": "dbtest",
+    "dialect": "mysql"
+}
+}
