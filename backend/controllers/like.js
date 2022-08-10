@@ -1,5 +1,5 @@
 const { Like } = require("../models");
-const Like = require("../models/like");
+const like = require("../models/like");
 
 
 exports.createLike = (req, res, next) => {
