@@ -2,8 +2,8 @@ const { Post, User } = require("../models");
 const fs = require("fs-extra");
 
 exports.createPost = (req, res, next) => {
-  if (req.body.text === "") {
-    return res.status(400).json({ error: "Merci de remplir tous les champs." });
+  if (req.body.text === "" || !req.file) {
+    return res.status(400).json({ error: "Merci d'écrire votre texte ou de charger votre image avant d'envoyer." });
   }
 
   Post.create({
@@ -25,7 +25,7 @@ exports.createPost = (req, res, next) => {
 };
 
 
-exports.getAllPosts = (_req, res) => {
+exports.getAllPosts = (req, res, next) => {
   
   Post.findAll({
     order: [["createdAt", "DESC"]],

@@ -2,9 +2,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const passwordValidator = require("password-validator");
 require("dotenv").config();
-const { User, Post } = require("../models");
-//----------------------------------------------------------------------------------------------------------------------
-//creation du schema
+const { User } = require("../models");
+
 let schema = new passwordValidator();
 schema
   .is()
@@ -81,7 +80,6 @@ exports.login = async (req, res, next) => {
       isAdmin: user.isAdmin,
       username: user.username,
       token: jwt.sign(
-
         {
           userId: user.id,
           isAdmin: user.isAdmin,
@@ -92,34 +90,5 @@ exports.login = async (req, res, next) => {
     });
   } catch (error) {
     res.status(500).json({ error });
-  }
-};
-
-
-
-//----------------------------------------------------------------------------------------------------------------------
-exports.deleteProfile = async (req, res, next) => {
-  try {
-    const user = await User.findOne({ where: { id: req.params.id } });
-    if (!user) {
-      res.status(404).json({
-        message: "user not found",
-      });
-      return;
-    }
-    if (user.id !== res.locals.userId && res.locals.isAdmin) {
-      res.status(403).json({
-        message: "Not authorized",
-      });
-      return;
-    }
-    await user.destroy();
-    res.status(200).json({
-      message: "user deleted",
-    });
-  } catch (error) {
-    res.status(400).json({
-      error: error.message,
-    });
   }
 };
