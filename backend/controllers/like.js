@@ -1,5 +1,4 @@
 const { Like } = require("../models");
-const like = require("../models/like");
 
 
 exports.createLike = (req, res, next) => {
@@ -29,7 +28,7 @@ exports.getLikesCount = async (req, res, next) => {
 
 exports.manageLikes = async (req, res, next) => {
   try {
-    const like = await Comment.findOne({ where: { id: req.params.id } });
+    const like = await Like.findOne({ where: { id: req.params.id } });
     if (!like) {
       res.status(404).json({
         message: "erreur like non créé",
