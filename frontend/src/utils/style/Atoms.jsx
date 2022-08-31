@@ -59,7 +59,7 @@ justify-content: center;
 export const FormContainer = styled.div`
 background-color: ${colors.secondary};
 width: 300px;
-margin-left: 35%;
+margin: auto;
 border-radius: 15px;
 display: flex;
 flex-direction: column;

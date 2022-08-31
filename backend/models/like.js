@@ -25,6 +25,11 @@ module.exports = (sequelize, dataTypes) => {
         allowNull: false,
         defaultValue: false,
       },
+      likeKey: {
+        type: dataTypes.STRING,
+        allowNull: false,
+        unique: true,
+      }
     },
     {
       sequelize,

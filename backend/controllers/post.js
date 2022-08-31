@@ -2,8 +2,8 @@ const { Post, User } = require("../models");
 const fs = require("fs-extra");
 
 exports.createPost = (req, res, next) => {
-  if (req.body.text === "" || !req.file) {
-    return res.status(400).json({ error: "Merci d'écrire votre texte ou de charger votre image avant d'envoyer." });
+  if (req.body.text === "") {
+    return res.status(400).json({ error: "Merci d'écrire votre texte avant d'envoyer." });
   }
 
   Post.create({
@@ -15,10 +15,9 @@ exports.createPost = (req, res, next) => {
         : null,
   })
     .then(() => {
-      alert(res);
         res.status(201).json({ message: "Post enregistré!" });
         if(!res.locals.userId){
-          alert('il n\y a pas d\'userId dans la requête');
+          console.log('il n\y a pas d\'userId dans la requête');
         }
     })
     .catch((error) => res.status(400).json({ error }));
@@ -87,8 +86,8 @@ exports.deletePost = async (req, res, next) => {
       return;
     }
 
-    if (post.userId !== res.locals.userId || !res.locals.isAdmin) {
-      res.status(403).json({
+    if (post.userId !== res.locals.userId && !res.locals.isAdmin) {
+      res.status(401).json({
         message: "Not authorized",
       });
       return;
@@ -125,7 +124,7 @@ exports.updatePost = async (req, res, next) => {
     }
 
     if (post.userId !== res.locals.userId || !res.locals.isAdmin) {
-      res.status(403).json({
+      res.status(401).json({
         message: "Not authorized",
       });
       return;
