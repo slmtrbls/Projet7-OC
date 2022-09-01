@@ -105,6 +105,7 @@ cursor: pointer;
 function Post( { post, user }) {
 
     const [like, setLike] = useState(false);
+    const [isLike, setIsLike] = useState(false);
     const [likeCount, setLikeCount] = useState(0);
     const [Authorized, setAuthorized] = useState(false);
 
@@ -121,13 +122,13 @@ function Post( { post, user }) {
     axios
         .post(`http://localhost:3000/api/post/${postId}/like`)
         .then(() => { 
-            window.location.reload();
+            setIsLike(true);
         })
         .catch(() => {
             axios
             .put(`http://localhost:3000/api/post/${postId}/like`, )
                 .then(() => { 
-                window.location.reload();
+                    setIsLike(!isLike);
                 })
                 .catch((err) => { console.log(err)})
         })
@@ -159,7 +160,7 @@ function Post( { post, user }) {
     useEffect(() => {
     getLikeInfo(post.id);
     getLikeCount(post.id);
-    }, [post]);
+    }, [post.id, isLike]);
     
     const isAuthorized = () => {
         if (user.id === post.userId || user.isAdmin) {
@@ -169,9 +170,8 @@ function Post( { post, user }) {
 
     useEffect(() => {
         isAuthorized();
-    })
+    },)
 
-   /*  */
 
     return (
         <PostWrapper>
@@ -183,7 +183,7 @@ function Post( { post, user }) {
               </ContentContainer>
               <ItemsContainer>
                 <LikeInfo>
-                <LikeDiv onClick={() => likeUnlike(post.id)}>
+                <LikeDiv onClick={() => likeUnlike(post.id)} key='like'>
                 { like ? (<StyledLike key={colors.primary}/>) : (<FaRegHeart />) }            
                 </LikeDiv>
                 <LikeCount>{ likeCount }</LikeCount>
