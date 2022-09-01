@@ -51,8 +51,11 @@ height: 90%;
 width: 40%;
 margin: 5px;
 padding-top: 5px;
+overflow:auto;
+text-overflow:ellipsis;
 @media screen and (max-width: 500px) {
     height: 50%;
+    width: 95%;
   }
 `
 
@@ -64,6 +67,8 @@ object-fit: cover;
 margin: 5px;
 @media screen and (max-width: 500px) {
     height: 50%;
+    width: 90%;
+    margin: auto;
   }
 `
 
