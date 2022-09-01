@@ -14,9 +14,14 @@ const Logo = styled.img`
 const NavContainer = styled.nav`
   padding: 5px;
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
   align-items: center;
   border-bottom: 4px solid ${colors.tertiary};
+  @media screen and (max-width: 400px) {
+    display: flex;
+    flex-direction: column;
+  }
 `
 const StyledLink = styled.p`
 padding: 10px 15px;

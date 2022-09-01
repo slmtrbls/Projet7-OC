@@ -92,3 +92,22 @@ exports.login = async (req, res, next) => {
     res.status(500).json({ error });
   }
 };
+
+exports.getUserInfo = async (req, res, next) => {
+  try {
+    const user = await User.findOne({
+      where: { id: res.locals.userId },
+    });
+    if (!user) {
+      res.status(404).json({
+        message: "user not found",
+      });
+      return;
+    }
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(404).json({
+      error: error,
+    });
+  }
+};

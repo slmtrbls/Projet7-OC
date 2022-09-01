@@ -42,18 +42,19 @@ exports.getOneLike = async (req, res, next) => {
 
 
 exports.getLikesCount = async (req, res, next) => {
-  let likeCount = await Like.count({
+  try {
+  const likeCount = await Like.count({
     where: { postId: req.params.postId, isLiked: true },
   })
-    .then(() => {
       res.status(200).json(likeCount);
-    })
-    .catch((error) => {
+  }
+  catch {(error) => {
       res.status(400).json({
-        error: error,
+        message: error
       });
-    });
-};
+    };
+  };
+}
 
 
 exports.manageLikes = async (req, res, next) => {

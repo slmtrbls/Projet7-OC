@@ -27,6 +27,9 @@ export const StyledLink = styled(Link)`
   text-decoration: none;
   font-size: 18px;
   text-align: center;
+  @media screen and (max-width: 400px) {
+    margin: 15px;
+  }
 `
 
 export const StyledLabel = styled.label`
@@ -47,6 +50,7 @@ padding: 10px 20px;
 border-radius: 15px;
 color: white;
 border: 2px solid ${colors.tertiary};
+cursor: pointer;
 `
 
 export const StyledBody = styled.div`
