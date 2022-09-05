@@ -3,7 +3,7 @@ import './main.css'
 
 const StyledGlobalStyle = createGlobalStyle`
     * {
-      font-family: 'Lato';
+      font-family: 'Lato', Helvetica, sans-serif;
     }
 `
 

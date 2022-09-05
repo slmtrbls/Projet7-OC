@@ -4,7 +4,7 @@ const passwordValidator = require("password-validator");
 require("dotenv").config();
 const { User } = require("../models");
 
-let schema = new passwordValidator();
+let schema = new passwordValidator(); // schema de validation du mot de passe
 schema
   .is()
   .min(8) //au moins 8 caractères
@@ -23,11 +23,11 @@ schema
   .not()
   .oneOf(["Passw0rd", "Password123"]);
 
-const regexEmail =
+const regexEmail = // validation de l'adresse email
   /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 
-exports.signup = async (req, res, next) => { 
+exports.signup = async (req, res, next) => { // permet de gérer la création de compte
   const { email, username, password } = req.body;
   if (!regexEmail.test(email)) {
     return res.status(400).json({ error: "Email incorrect" });
@@ -61,7 +61,7 @@ exports.signup = async (req, res, next) => {
   }
 };
 
-exports.login = async (req, res, next) => {
+exports.login = async (req, res, next) => { // permet de gérer la connexion
   const { email, password } = req.body;
   if (!email || !password) {
     return res
@@ -72,7 +72,7 @@ exports.login = async (req, res, next) => {
     const user = await User.findOne({ where: { email } }  );
     const isValid = await bcrypt.compare(password, user.password);
     if (!isValid) {
-      res.status(401).json({ error: "Utilisateur non trouvé !" });
+      res.status(401).json({ error: "Paire Email/Password incorrecte !" });
       return;
     }
     res.status(200).json({
@@ -93,7 +93,7 @@ exports.login = async (req, res, next) => {
   }
 };
 
-exports.getUserInfo = async (req, res, next) => {
+exports.getUserInfo = async (req, res, next) => { // permet d'obtenir l'Username et de savoir si l'user est autorisé à modifier/supprimer
   try {
     const user = await User.findOne({
       where: { id: res.locals.userId },

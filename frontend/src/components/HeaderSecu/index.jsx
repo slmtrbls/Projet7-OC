@@ -1,11 +1,11 @@
 import { StyledLink } from '../../utils/style/Atoms'
 import styled from 'styled-components'
 import colors from '../../utils/style/colors'
-import DarkLogo from '../../assets/icon-left-font-monochrome-black.png'
+import DarkLogo from '../../assets/icon-left-font.png'
 
 const SecuLogo = styled.img`
   height: 150px;
-  width: 200px;
+  width: 250px;
   object-fit: cover;
 `
 

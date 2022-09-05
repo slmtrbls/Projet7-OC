@@ -3,6 +3,7 @@ import axios from 'axios'
 import styled from 'styled-components'
 import colors from '../../utils/style/colors'
 import { FaHeart, FaRegHeart } from 'react-icons/fa'
+import Modify from '../Modal'
 
 const PostWrapper = styled.div`
 display: flex;
@@ -93,6 +94,11 @@ const LikeCount = styled.p`
 display: flex;
 `
 
+const ButtonDiv = styled.div`
+display: flex;
+flex-direction: row;
+`
+
 const StyledButton = styled.button`
 background-color: ${colors.primary};
 color: white;
@@ -100,25 +106,29 @@ border-radius: 15px;
 margin: 10px 10px 0 10px;
 padding: 5px 15px;
 cursor: pointer;
+@media screen and (max-width: 500px) {
+    height: 30px;
+    margin: 10px 5px 0 0;
+  }
 `
 
-function Post( { post, user }) {
+function Post( { post, user, getPosts }) {
 
     const [like, setLike] = useState(false);
     const [isLike, setIsLike] = useState(false);
     const [likeCount, setLikeCount] = useState(0);
     const [Authorized, setAuthorized] = useState(false);
 
-    const supprimer = (postId) => {
+    const supprimer = (postId) => { // fonction pour supprimer un post
         axios
           .delete(`http://localhost:3000/api/post/${postId}`)
           .then(() => {
-            window.location.reload();
+            getPosts();
           })
           .catch((err) => { console.log(err)});
        };
       
-    const likeUnlike = (postId) => {
+    const likeUnlike = (postId) => { // fonction pour liker / unliker un post
     axios
         .post(`http://localhost:3000/api/post/${postId}/like`)
         .then(() => { 
@@ -135,7 +145,7 @@ function Post( { post, user }) {
     };
       
       
-    const getLikeInfo = (postId) => {
+    const getLikeInfo = (postId) => { // fonction pour obtenir le statut like/unlike
     axios
         .get(`http://localhost:3000/api/post/${postId}/like`)
         .then((like) => {
@@ -146,7 +156,7 @@ function Post( { post, user }) {
         })
     };
 
-    const getLikeCount = (postId) => {
+    const getLikeCount = (postId) => { // fonction pour obtenir le nombre de likes
     axios
         .get(`http://localhost:3000/api/post/${postId}/likecount`)
         .then((res) => {
@@ -157,12 +167,12 @@ function Post( { post, user }) {
         })
     };
 
-    useEffect(() => {
+    useEffect(() => { // déclenchement des fonctions avec redéclenchement en cas de like unlike
     getLikeInfo(post.id);
     getLikeCount(post.id);
     }, [post.id, isLike]);
     
-    const isAuthorized = () => {
+    const isAuthorized = () => { // permet de configurer les apparitions des boutons modifier et supprimer
         if (user.id === post.userId || user.isAdmin) {
         setAuthorized(true);
         } 
@@ -188,10 +198,10 @@ function Post( { post, user }) {
                 </LikeDiv>
                 <LikeCount>{ likeCount }</LikeCount>
                 </LikeInfo>
-                { Authorized ? (<div>
-                                    <button>Modifier</button>
+                { Authorized ? (<ButtonDiv>
+                                    <Modify post={post} getPosts={getPosts} key={`Modif-${post.id}`}/>
                                     <StyledButton onClick={ () => { supprimer(post.id) } }>Supprimer</StyledButton>
-                                </div>) : (null) }             
+                                </ButtonDiv>) : (null) }             
               </ItemsContainer>
             </PostContainer>
           </PostWrapper>

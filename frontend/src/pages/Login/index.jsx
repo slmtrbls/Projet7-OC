@@ -10,7 +10,7 @@ function Login() {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
 
-  const onSubmit = (data) => {
+  const onSubmit = (data) => { // envoi des infos utilisateurs côté serveur pour la connexion
     axios
       .post('http://localhost:3000/api/auth/login', data)
       .then(({ data }) => {

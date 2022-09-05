@@ -3,11 +3,11 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
 import { useEffect} from 'react'
 import colors from '../../utils/style/colors'
-import DarkLogo from '../../assets/icon-left-font-monochrome-black.png'
+import DarkLogo from '../../assets/icon-left-font.png'
 
 const Logo = styled.img`
   height: 150px;
-  width: 200px;
+  width: 250px;
   object-fit: cover;
 `
 
@@ -36,9 +36,9 @@ cursor: pointer;
 
 function Header() {
 
-  axios.defaults.headers.common.Authorization = `Bearer ${localStorage.token}`;
+  axios.defaults.headers.common.Authorization = `Bearer ${localStorage.token}`; // permet de configurer l'entête authorization de chaque requête avec l'inclusion du token
   
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // permet de naviguer entre les pages du site
 
   const déconnexion = () => {
     localStorage.clear();
@@ -46,7 +46,7 @@ function Header() {
   };
 
   useEffect(() => {
-    if (!localStorage.token) {
+    if (!localStorage.token) { // s'il n'y a pas de token l'utilisateur est redirigé vers la page login
       navigate('/login')
     }
   });

@@ -3,7 +3,7 @@ const app = require("./app");
 const db = require("./models/index");
 require("dotenv").config();
 
-const normalizePort = (val) => {
+const normalizePort = (val) => { // configuration du port
  
   const port = parseInt(val, 10);
 
@@ -23,7 +23,7 @@ app.set(
   port
 ); 
 
-const errorHandler = (error) => {
+const errorHandler = (error) => { // gestion des erreurs
   
   if (error.syscall !== "listen") {
     throw error;
@@ -45,7 +45,7 @@ const errorHandler = (error) => {
   }
 };
 
-const main = async () => {
+const main = async () => { // connexion et mise à jour de la bdd
   try {
     await db.sequelize.authenticate();
     await db.sequelize.sync({ alter: true }); // paramètre de développement à changer en prod, actualise les changement en temps réelle.

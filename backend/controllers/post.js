@@ -1,7 +1,7 @@
 const { Post, User } = require("../models");
 const fs = require("fs-extra");
 
-exports.createPost = (req, res, next) => {
+exports.createPost = (req, res, next) => { // permet de créer un post
   if (req.body.text === "") {
     return res.status(400).json({ error: "Merci d'écrire votre texte avant d'envoyer." });
   }
@@ -24,7 +24,7 @@ exports.createPost = (req, res, next) => {
 };
 
 
-exports.getAllPosts = (req, res, next) => {
+exports.getAllPosts = (req, res, next) => { // permet de récupérer tous les posts
   
   Post.findAll({
     order: [["createdAt", "DESC"]],
@@ -49,7 +49,7 @@ exports.getAllPosts = (req, res, next) => {
 };
 
 
-exports.getOnePost = async (req, res, next) => {
+exports.getOnePost = async (req, res, next) => { 
   try {
     const post = await Post.findOne({
       attributes: [
@@ -76,7 +76,7 @@ exports.getOnePost = async (req, res, next) => {
   }
 };
 
-exports.deletePost = async (req, res, next) => {
+exports.deletePost = async (req, res, next) => { // permet de supprimer un post
   try {
     const post = await Post.findOne({ where: { id: req.params.id } });
     if (!post) {
@@ -113,7 +113,7 @@ exports.deletePost = async (req, res, next) => {
   }
 };
 
-exports.updatePost = async (req, res, next) => {
+exports.updatePost = async (req, res, next) => { // permet de modifier un post
   try {
     const post = await Post.findOne({ where: { id: req.params.id } });
     if (!post) {
@@ -123,14 +123,18 @@ exports.updatePost = async (req, res, next) => {
       return;
     }
 
-    if (post.userId !== res.locals.userId || !res.locals.isAdmin) {
+    if (post.userId !== res.locals.userId && !res.locals.isAdmin) {
       res.status(401).json({
         message: "Not authorized",
       });
       return;
     }
 
-    if (post.imageUrl !== null && req.file) {
+    if (req.body.text === "") {
+      return res.status(400).json({ error: "Merci d'écrire votre texte avant d'envoyer." });
+    }
+
+    if (req.file && post.imageUrl) {
       const filename = post.imageUrl.split("/images/")[1];
       await fs.unlink(`images/${filename}`);
       await post.update({
@@ -140,11 +144,32 @@ exports.updatePost = async (req, res, next) => {
         ? `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
         : null,     
       });
-
+      res.status(200).json({
+        message: "Post modifié",
+      });
     }
-    res.status(200).json({
-      message: "Post modifié",
-    });
+    
+    if (req.file && !post.imageUrl) {
+      await post.update({
+      text: req.body.text,
+      imageUrl:
+      req.body.text && req.file
+        ? `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
+        : null,     
+      });
+      res.status(200).json({
+        message: "Post modifié",
+      });
+    }
+
+    if (!req.file) {
+      await post.update({
+        text: req.body.text,
+      });
+      res.status(200).json({
+        message: "Post modifié",
+      });
+    }
   } catch (error) {
     res.status(400).json({
       message: error.message,

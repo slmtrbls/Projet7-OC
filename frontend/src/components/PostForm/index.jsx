@@ -61,7 +61,7 @@ justify-content: center;
 color: red;
 `
 
-function PostForm() {
+function PostForm({getPosts}) {
 
     const { register, handleSubmit } = useForm();
     const [errorMessage, setErrorMessage] = useState("");
@@ -69,15 +69,16 @@ function PostForm() {
     const onSubmit = (data) => {
         const text = data.text;
         const imageUrl = data.files[0];
-    
-        const formData = new FormData();
+
+            
+        const formData = new FormData(); // utilisation de FormData pour la gestion des fichiers côté serveur
         formData.append('text', text);
         formData.append('image', imageUrl);
     
         axios
-          .post('http://localhost:3000/api/post', formData)
+          .post('http://localhost:3000/api/post', formData) // envoi des informations du post au server
           .then(() => {
-            window.location.reload();
+            getPosts();
             setErrorMessage('');
           })
           .catch((err) => { setErrorMessage(err.response.data.error) });

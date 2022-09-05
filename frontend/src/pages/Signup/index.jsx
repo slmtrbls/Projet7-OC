@@ -15,10 +15,10 @@ function Signup() {
     const password = data.password ;
     const dataLogin = { email, password };
     axios
-      .post('http://localhost:3000/api/auth/signup', data)
+      .post('http://localhost:3000/api/auth/signup', data) // envoi des infos utilisateurs pour la création de compte
       .then(() => {
                     axios
-                    .post('http://localhost:3000/api/auth/login', dataLogin)
+                    .post('http://localhost:3000/api/auth/login', dataLogin) // envoi des infos de connexion
                     .then(({ data }) => {
                       localStorage.token = data.token;
                       navigate('/');

@@ -1,7 +1,7 @@
 const { Like } = require("../models");
 
 
-exports.createLike = (req, res, next) => {
+exports.createLike = (req, res, next) => { // permet de créer le like
     Like.create({
     userId: res.locals.userId,
     postId: req.params.postId,
@@ -12,7 +12,7 @@ exports.createLike = (req, res, next) => {
     .catch((error) => res.status(500).json(error));
 };
 
-exports.getOneLike = async (req, res, next) => {
+exports.getOneLike = async (req, res, next) => { // permet de récupérer les informations du like
   try {
     const like = await Like.findOne({
       attributes: [
@@ -41,7 +41,7 @@ exports.getOneLike = async (req, res, next) => {
 };
 
 
-exports.getLikesCount = async (req, res, next) => {
+exports.getLikesCount = async (req, res, next) => { // permet d'obtenir le nombre de like pour un post
   try {
   const likeCount = await Like.count({
     where: { postId: req.params.postId, isLiked: true },
@@ -57,7 +57,7 @@ exports.getLikesCount = async (req, res, next) => {
 }
 
 
-exports.manageLikes = async (req, res, next) => {
+exports.manageLikes = async (req, res, next) => { // permet de liker ou d'unliker un post
   try {
     const like = await Like.findOne({ where: { postId: req.params.postId, userId: res.locals.userId } });
     if (!like) {
