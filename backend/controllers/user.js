@@ -46,6 +46,12 @@ exports.signup = async (req, res, next) => { // permet de gérer la création de
     return;
   }
   try {
+    const usertest = await User.findOne({ where: { email } }  );
+
+    if (usertest) {
+      res.status(500).json({ error: "Compte existant veuillez entrer une autre adresse email !" });
+    } else {
+
     const hash = await bcrypt.hash(password, 10);
     const user = await User.create({ 
       email: email,
@@ -55,7 +61,7 @@ exports.signup = async (req, res, next) => { // permet de gérer la création de
     res.status(201).json({
       userId: user.id,
       isAdmin: user.isAdmin,
-    });
+    }); }
   } catch (error) {
     res.status(500).json({ error });
   }
